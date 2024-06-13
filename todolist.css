@@ -58,6 +58,12 @@ body {
     padding: 20px;
 }
 
+.logout{
+    display: flex;
+    justify-content: end;
+    padding-bottom: 20px;
+}
+
 .calendar {
     width: 100%;
     padding: 20px;
@@ -145,6 +151,15 @@ body {
     width: 80%;
     max-width: 500px;
     border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-content input{
+    padding : 10px;
+    margin-bottom: 10px;
+    border: none;
+    background-color: lightgray;
 }
 
 .close {
