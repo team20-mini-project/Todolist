@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My To-Do List</title>
-    <link rel="stylesheet" href="todolist.css">
-
+    <!-- FullCalendar CSS -->
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css' rel='stylesheet' />
+    <link href="todolist.css" rel="stylesheet"/>
 </head>
 <body>
     <div class="sidebar">
@@ -28,9 +29,11 @@
         </div>
     </div>
     <div class="content">
+        <div class="logout">
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
         <div class="calendar">
-            <h2>June 2024</h2>
-            <!-- 여기 달력 구현 -->
+            <div id="calendar"></div>
         </div>
         <div class="todo-list">
             <h3 id="category-title">Today's Tasks</h3>
@@ -45,8 +48,9 @@
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
             <h2>Add a New Task</h2>
-            <input type="text" id="new-todo" placeholder="Enter task">
-            <input type="text" id="new-todo-keyword" placeholder="Enter keyword">
+            <input type="text" id="new-todo" placeholder="할 일을 입력하세요">
+            <input type="text" id="new-todo-keyword" placeholder="키워드를 입력하세요">
+            <input type="date" id="new-todo-date" placeholder="날짜를 입력하세요">
             <button onclick="addTodo()">Add</button>
         </div>
     </div>
@@ -57,10 +61,13 @@
             <h2>Edit Task</h2>
             <input type="text" id="edit-todo" placeholder="Edit task">
             <input type="text" id="edit-todo-keyword" placeholder="Edit keyword">
+            <input type="date" id="edit-todo-date" placeholder="Edit date">
             <button onclick="saveTodo()">Save</button>
         </div>
     </div>
 
-    <script src="script.js"> </script>
+    <!-- FullCalendar JS -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
