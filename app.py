@@ -10,25 +10,25 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # SQLAlchemy 경고 메시
 
 db = SQLAlchemy(app)
 
-#유저 로그인 정보
-
+# 유저 로그인 정보
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(150), nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
 
-#유저 스케줄
-    
+# 유저 스케줄
 class UserSchedule(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     schedule = db.Column(db.String(500), nullable=False)
-    
-    
-#가입 시 email form 확인    
+    schedule_date = db.Column(db.String(500), nullable=False)
+    schedule_info = db.Column(db.String(500), nullable=False)
+
+# 가입 시 email form 확인    
 def is_valid_email(email):
     regex = r'^\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
-    return re.match(regex, email)
+    return re.match(regex, email) is not None
 
 @app.route('/')
 def home():
@@ -36,7 +36,6 @@ def home():
         return redirect(url_for('mainPage'))
     else:
         return render_template('login.html', register=False)
-
 
 @app.route('/main')
 def mainPage():
@@ -47,7 +46,7 @@ def mainPage():
         flash('로그인이 필요합니다.', 'danger')
         return redirect(url_for('home'))
 
-#로그인
+# 로그인
 @app.route('/login', methods=['POST'])
 def login():
     username = request.form.get('username')
@@ -56,12 +55,12 @@ def login():
     
     if user and check_password_hash(user.password, password):
         session['username'] = user.username  # 세션에 사용자 이름 저장
-        return redirect(url_for('mainPage'))
+        return redirect(url_for('mainPage', username=user.username))
     else:
         flash('로그인 실패. 사용자 이름과 비밀번호를 확인하세요.', 'danger')
         return redirect(url_for('home'))
 
-#가입
+# 가입
 @app.route('/register', methods=['POST'])
 def register():
     username = request.form.get('username')
@@ -139,8 +138,15 @@ def reset_password(username):
     
     return render_template('reset_password.html', username=username)
 
-
-
+@app.route('/mainPage/<username>')
+def logged_mainPage(username):
+    user = User.query.filter_by(username=username).first()
+    if user:
+        user_schedules = UserSchedule.query.filter_by(user_id=user.id).all()  # 사용자 스케줄 조회
+        return render_template('index.html', user=user, schedules=user_schedules)
+    else:
+        flash('사용자를 찾을 수 없습니다.', 'danger')
+        return redirect(url_for('home'))
 
 if __name__ == '__main__':
     with app.app_context():
