@@ -3,44 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-
-    <title>Document</title>
-    
-    <style>
-        
-    #schedule-nav{
-        background-color: #062764;
-    }
-    </style>
+    <title>My To-Do List</title>
+    <link rel="stylesheet" href="todolist.css">
 
 </head>
 <body>
-    
-  <nav class="navbar" id="schedule-nav" data-bs-theme="dark">
-    <!-- Navbar content -->
-    <div class="ms-3">
-      <img src="https://s3.ap-northeast-2.amazonaws.com/materials.spartacodingclub.kr/webjong/images/sparta-logo.svg" alt="">
-  </div>
-  <nav class="navbar navbar-expand-lg">
-      <div class="container-fluid">
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-              <ul class="navbar-nav">
-                  <li class="nav-item">
-                      <a class="nav-link text-white" aria-current="page" href="{{ url_for('home')}}">Home</a>
-                  </li>
-              </ul>
-          </div>
-      </div>
-  </nav>
-  </nav>
+    <div class="sidebar">
+        <div>
+            <h2>My To-Do List</h2>
+            <ul id="category-list">
+                <li>
+                    <span onclick="showCategory('Home')">Home</span>
+                    <button onclick="removeCategory(this)">Delete</button>
+                </li>
+                <li>
+                    <span onclick="showCategory('Today')">Today</span>
+                    <button onclick="removeCategory(this)">Delete</button>
+                </li>
+            </ul>
+        </div>
+        <div class="add-category">
+            <input type="text" id="new-category" placeholder="Add a new category">
+            <button onclick="addCategory()">Add</button>
+        </div>
+    </div>
+    <div class="content">
+        <div class="calendar">
+            <h2>June 2024</h2>
+            <!-- 여기 달력 구현 -->
+        </div>
+        <div class="todo-list">
+            <h3 id="category-title">Today's Tasks</h3>
+            <ul id="todo-items">
+                <!-- 할 일 항목이 여기에 추가됩니다 -->
+            </ul>
+            <button onclick="openModal()">Add New Task</button>
+        </div>
+    </div>
 
-    <p>로그인 성공 {{user.username}}</p>
-    <a href="{{ url_for('logout') }}">Logout</a>
+    <div id="todoModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Add a New Task</h2>
+            <input type="text" id="new-todo" placeholder="Enter task">
+            <input type="text" id="new-todo-keyword" placeholder="Enter keyword">
+            <button onclick="addTodo()">Add</button>
+        </div>
+    </div>
+
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditModal()">&times;</span>
+            <h2>Edit Task</h2>
+            <input type="text" id="edit-todo" placeholder="Edit task">
+            <input type="text" id="edit-todo-keyword" placeholder="Edit keyword">
+            <button onclick="saveTodo()">Save</button>
+        </div>
+    </div>
+
+    <script src="script.js"> </script>
 </body>
 </html>
